@@ -73,18 +73,19 @@ postgraduate-law-school-system/
 │
 ├── frontend/
 │   ├── student/
-│   │   ├── dashboard.html
-│   │   └── registration.html
+│   │   ├── dashboard-supabase.html (you'll create this)
+│   │   ├── registration-supabase.html ✓ (created)
+│   │   └── login.html ✓ (created)
 │   │
-│   ├── lecturer/
-│   │   └── lecturer_dashboard.html
+│   └── lecturer/
+│   |    └── lecturer_dashboard.html
 │   │
 │   ├── admin/
 │   │  └── admin_dashboard.html
 │  
 ├── backend/
-│   ├── db_connection/
-│   │   └── db_connection.sql   ( .php / .js )
+│   └── db_connection/
+│       └── supabase-config.js ✓ (created)
 │   │
 │   ├── sql/
 │   

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Law School Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-md w-full">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-amber-600 rounded-full mb-4">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl font-bold text-white mb-2">Law School Portal</h1>
+            <p class="text-amber-100">Sign in to your account</p>
+        </div>
+
+        <!-- Login Card -->
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <!-- Email -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Email Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                            </svg>
+                        </div>
+                        <input 
+                            type="email" 
+                            name="email" 
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" 
+                            placeholder="your.email@example.com" 
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                        </div>
+                        <input 
+                            type="password" 
+                            name="password" 
+                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" 
+                            placeholder="Enter your password" 
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="flex items-center justify-between mb-6">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-amber-600 border-gray-300 rounded focus:ring-amber-500">
+                        <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    </label>
+                    <a href="#" class="text-sm text-amber-600 hover:text-amber-700 font-semibold">
+                        Forgot password?
+                    </a>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="hidden mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <p class="text-sm text-red-600"></p>
+                </div>
+
+                <!-- Submit Button -->
+                <button 
+                    type="submit" 
+                    id="loginBtn"
+                    class="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-200 shadow-lg"
+                >
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Divider -->
+            <div class="relative my-6">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-300"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-white text-gray-500">Don't have an account?</span>
+                </div>
+            </div>
+
+            <!-- Register Link -->
+            <a href="registration-supabase.html" class="block w-full text-center py-3 border-2 border-amber-600 text-amber-600 rounded-lg font-semibold hover:bg-amber-50 transition-all duration-200">
+                Register Now
+            </a>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loadingSpinner" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+            <div class="bg-white rounded-lg p-8">
+                <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-amber-600 mx-auto"></div>
+                <p class="mt-4 text-gray-700 font-semibold">Signing in...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Supabase Configuration -->
+    <script src="../backend/db_connection/supabase-config.js"></script>
+
+    <script>
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', async () => {
+            const session = await Auth.getSession();
+            if (session) {
+                // User already logged in, redirect to dashboard
+                const user = await Auth.getCurrentUser();
+                redirectToDashboard(user);
+            }
+        });
+
+        // Handle Login
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            const email = formData.get('email');
+            const password = formData.get('password');
+
+            // Hide error message
+            hideError();
+            
+            // Show loading spinner
+            showLoading(true);
+
+            try {
+                // 1. Sign in with Supabase Auth
+                const authResult = await Auth.signIn(email, password);
+
+                if (!authResult.success) {
+                    throw new Error(authResult.error);
+                }
+
+                // 2. Get user metadata to determine user type
+                const user = authResult.data.user;
+                const userType = user.user_metadata?.user_type;
+
+                // 3. Fetch user data from appropriate table
+                let userData;
+                if (userType === 'student') {
+                    const result = await DB.students.getByEmail(email);
+                    if (result.success) {
+                        userData = result.data;
+                    }
+                } else if (userType === 'lecturer') {
+                    const result = await DB.lecturers.getByEmail(email);
+                    if (result.success) {
+                        userData = result.data;
+                    }
+                }
+
+                // 4. Store user data in session storage
+                if (userData) {
+                    sessionStorage.setItem('userData', JSON.stringify(userData));
+                    sessionStorage.setItem('userType', userType);
+                }
+
+                // 5. Redirect to appropriate dashboard
+                redirectToDashboard(user);
+
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('Invalid email or password. Please try again.');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Redirect to appropriate dashboard
+        function redirectToDashboard(user) {
+            const userType = user.user_metadata?.user_type;
+            
+            if (userType === 'student') {
+                window.location.href = 'dashboard-supabase.html';
+            } else if (userType === 'lecturer') {
+                window.location.href = '../lecturer/lecturer_dashboard.html';
+            } else {
+                showError('Unable to determine user type. Please contact support.');
+            }
+        }
+
+        // Show loading spinner
+        function showLoading(show) {
+            const spinner = document.getElementById('loadingSpinner');
+            if (show) {
+                spinner.classList.remove('hidden');
+                spinner.classList.add('flex');
+                document.getElementById('loginBtn').disabled = true;
+            } else {
+                spinner.classList.add('hidden');
+                spinner.classList.remove('flex');
+                document.getElementById('loginBtn').disabled = false;
+            }
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.querySelector('p').textContent = message;
+            errorDiv.classList.remove('hidden');
+        }
+
+        // Hide error message
+        function hideError() {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
