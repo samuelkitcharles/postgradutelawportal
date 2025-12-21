@@ -111,6 +111,6 @@ database design, SQL development, and documentation.
 ROLES
 Charles Samuel 22213454 – SQL Database, Frontend
 Christy Lumbidi 22215889 – SQL Database
-Ahmed Noor Mahomed 22217829 - Backend
+Ahmed Noor Mahomed 22217829 - Backend, Frontend
 Sekou Brandy 22217709 – Backend, Frontend
 
