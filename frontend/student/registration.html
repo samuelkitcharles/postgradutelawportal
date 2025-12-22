@@ -397,7 +397,7 @@ async function registerLecturer(event) {
     // Validation
     if (!fullName || !dob || !gender || !phone || !email || !rank || !password || !confirmPassword) {
         alert('Please fill in all required fields');
-        return;
+        return ;
     }
 
     if (password !== confirmPassword) {
@@ -433,7 +433,7 @@ async function registerLecturer(event) {
             }
 
             // Login successful → redirect
-            window.location.href = "../lecturer/lecturer_dashboard.html";
+            window.location.href = "./lecturer/lecturer_dashboard.html";
             return;
         }
 
