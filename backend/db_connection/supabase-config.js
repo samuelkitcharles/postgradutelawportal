@@ -2,12 +2,12 @@
 // Replace with your actual Supabase project credentials
 
 const SUPABASE_CONFIG = {
-    url: 'https://rwybzknircmlddouqdmhz.supabase.co', 
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyeWJ6a25pcmNtbGRvdXFkbWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMjU2MTEsImV4cCI6MjA4MTkwMTYxMX0._nE8UEZyRnlygb1Dv25JeErutzAS8tLkUYCsJkyHrVU' 
+    url: 'https://rrybzknircmldouqdmhz.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJyeWJ6a25pcmNtbGRvdXFkbWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYzMjU2MTEsImV4cCI6MjA4MTkwMTYxMX0._nE8UEZyRnlygb1Dv25JeErutzAS8tLkUYCsJkyHrVU'
 };
 
 // Initialize Supabase client
-const supabase = window.supabase.createClient(
+const supabaseClient = window.supabase.createClient(
     SUPABASE_CONFIG.url,
     SUPABASE_CONFIG.anonKey
 );
@@ -17,12 +17,12 @@ const Auth = {
     // Sign up new user
     async signUp(email, password, userType, metadata = {}) {
         try {
-            const { data, error } = await supabase.auth.signUp({
+            const { data, error } = await supabaseClient.auth.signUp({
                 email: email,
                 password: password,
                 options: {
                     data: {
-                        user_type: userType, // 'student' or 'lecturer'
+                        user_type: userType,
                         ...metadata
                     }
                 }
@@ -39,7 +39,7 @@ const Auth = {
     // Sign in existing user
     async signIn(email, password) {
         try {
-            const { data, error } = await supabase.auth.signInWithPassword({
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
                 email: email,
                 password: password
             });
@@ -55,7 +55,7 @@ const Auth = {
     // Sign out
     async signOut() {
         try {
-            const { error } = await supabase.auth.signOut();
+            const { error } = await supabaseClient.auth.signOut();
             if (error) throw error;
             return { success: true };
         } catch (error) {
@@ -67,7 +67,7 @@ const Auth = {
     // Get current user
     async getCurrentUser() {
         try {
-            const { data: { user }, error } = await supabase.auth.getUser();
+            const { data: { user }, error } = await supabaseClient.auth.getUser();
             if (error) throw error;
             return user;
         } catch (error) {
@@ -79,7 +79,7 @@ const Auth = {
     // Get session
     async getSession() {
         try {
-            const { data: { session }, error } = await supabase.auth.getSession();
+            const { data: { session }, error } = await supabaseClient.auth.getSession();
             if (error) throw error;
             return session;
         } catch (error) {
@@ -94,7 +94,7 @@ const DB = {
     // Students
     students: {
         async create(studentData) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('students')
                 .insert([studentData])
                 .select();
@@ -107,7 +107,7 @@ const DB = {
         },
 
         async getById(studentId) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('students')
                 .select('*, programs(*), semesters(*)')
                 .eq('student_id', studentId)
@@ -121,7 +121,7 @@ const DB = {
         },
 
         async getByEmail(email) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('students')
                 .select('*, programs(*), semesters(*)')
                 .eq('email', email)
@@ -135,7 +135,7 @@ const DB = {
         },
 
         async update(studentId, updates) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('students')
                 .update(updates)
                 .eq('student_id', studentId)
@@ -152,7 +152,7 @@ const DB = {
     // Lecturers
     lecturers: {
         async create(lecturerData) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('lecturers')
                 .insert([lecturerData])
                 .select();
@@ -165,7 +165,7 @@ const DB = {
         },
 
         async getById(lecturerId) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('lecturers')
                 .select('*')
                 .eq('lecturer_id', lecturerId)
@@ -179,7 +179,7 @@ const DB = {
         },
 
         async getByEmail(email) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('lecturers')
                 .select('*')
                 .eq('email', email)
@@ -196,7 +196,7 @@ const DB = {
     // Enrollments
     enrollments: {
         async getStudentEnrollments(studentId, semesterId) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('enrollments')
                 .select(`
                     *,
@@ -215,7 +215,7 @@ const DB = {
         },
 
         async create(enrollmentData) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('enrollments')
                 .insert([enrollmentData])
                 .select();
@@ -231,7 +231,7 @@ const DB = {
     // Exam Results
     examResults: {
         async getStudentResults(studentId) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('exam_results')
                 .select(`
                     *,
@@ -250,8 +250,7 @@ const DB = {
     // Exams
     exams: {
         async getUpcomingExams(studentId, semesterId) {
-            // First get student's enrolled courses
-            const { data: enrollments, error: enrollError } = await supabase
+            const { data: enrollments, error: enrollError } = await supabaseClient
                 .from('enrollments')
                 .select('course_id')
                 .eq('student_id', studentId)
@@ -264,8 +263,7 @@ const DB = {
 
             const courseIds = enrollments.map(e => e.course_id);
 
-            // Then get upcoming exams for those courses
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('exam_schedule')
                 .select('*, courses(*)')
                 .in('course_id', courseIds)
@@ -283,7 +281,7 @@ const DB = {
     // Programs
     programs: {
         async getAll() {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('programs')
                 .select('*')
                 .order('program_name');
@@ -299,7 +297,7 @@ const DB = {
     // Announcements
     announcements: {
         async getRecent(limit = 5) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('announcements')
                 .select('*')
                 .order('posted_at', { ascending: false })
@@ -316,7 +314,7 @@ const DB = {
     // Teaching Assignments
     teachingAssignments: {
         async getLecturerCourses(lecturerId, semesterId) {
-            const { data, error } = await supabase
+            const { data, error } = await supabaseClient
                 .from('teaching_assignments')
                 .select(`
                     *,
@@ -337,34 +335,29 @@ const DB = {
 
 // Utility Functions
 const Utils = {
-    // Generate student ID
     generateStudentId() {
         const year = new Date().getFullYear();
         const random = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
         return parseInt(`${year}${random}`);
     },
 
-    // Generate lecturer ID
     generateLecturerId() {
         const random = Math.floor(Math.random() * 10000);
         return random;
     },
 
-    // Calculate GPA
     calculateGPA(results) {
         if (!results || results.length === 0) return 0;
         
         const total = results.reduce((sum, result) => sum + (result.score || 0), 0);
-        return (total / results.length / 25).toFixed(2); // Assuming 100 point scale to 4.0 GPA
+        return (total / results.length / 25).toFixed(2);
     },
 
-    // Format date
     formatDate(dateString) {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         return new Date(dateString).toLocaleDateString('en-US', options);
     },
 
-    // Format time
     formatTime(timeString) {
         return new Date('2000-01-01 ' + timeString).toLocaleTimeString('en-US', {
             hour: 'numeric',
@@ -374,7 +367,8 @@ const Utils = {
     }
 };
 
-// Export for use in other files
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { supabase, Auth, DB, Utils };
-}
+// Make available globally for browser
+window.supabaseClient = supabaseClient;
+window.Auth = Auth;
+window.DB = DB;
+window.Utils = Utils;
