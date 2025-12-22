@@ -199,12 +199,18 @@
                 </p>
             </div>
 
-            <!-- Submit Button -->
-            <div class="mt-6">
-                <button onclick="registerLecturer()" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-200 shadow-lg">
-                    Register as Lecturer
-                </button>
-            </div>
+           <!-- Submit Button -->
+<form id="lecturerRegistrationForm" onsubmit="registerLecturer(event)">
+    <div class="mt-6">
+        <button 
+            type="submit" 
+            id="lecturerSubmitBtn"
+            class="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-200 shadow-lg"
+        >
+            Register as Lecturer
+        </button>
+    </div>
+</form>
 
             <!-- Login Link -->
             <div class="mt-6 text-center">
@@ -376,7 +382,9 @@ document.getElementById('successMessage').innerHTML =
 }
 
         // Register Lecturer
-async function registerLecturer() {
+async function registerLecturer(event) {
+    event.preventDefault();
+    
     const fullName = document.getElementById('lecturerFullName').value;
     const dob = document.getElementById('lecturerDob').value;
     const gender = document.getElementById('lecturerGender').value;
@@ -386,6 +394,7 @@ async function registerLecturer() {
     const password = document.getElementById('lecturerPassword').value;
     const confirmPassword = document.getElementById('lecturerConfirmPassword').value;
 
+    // Validation
     if (!fullName || !dob || !gender || !phone || !email || !rank || !password || !confirmPassword) {
         alert('Please fill in all required fields');
         return;
@@ -396,21 +405,39 @@ async function registerLecturer() {
         return;
     }
 
+    if (password.length < 6) {
+        alert('Password must be at least 6 characters');
+        return;
+    }
+
     try {
-        // 1️⃣ Create Supabase Auth user
+        // Show loading
+        showLoading(true);
+
+        // Generate lecturer ID
+        const lecturerId = Utils.generateLecturerId();
+
+        // 1. Create Supabase Auth user
         const authResult = await Auth.signUp(email, password, 'lecturer', {
             full_name: fullName
         });
 
         if (!authResult.success) {
-            alert(authResult.error);
+            // Try to login instead (user probably already exists)
+            const loginResult = await Auth.signIn(email, password);
+
+            if (!loginResult.success) {
+                alert('Account already exists, but password is incorrect.');
+                showLoading(false);
+                return;
+            }
+
+            // Login successful → redirect
+            window.location.href = "../lecturer/lecturer_dashboard.html";
             return;
         }
 
-        // 2️⃣ Generate lecturer ID
-        const lecturerId = Utils.generateLecturerId();
-
-        // 3️⃣ Insert into lecturers table
+        // 2. Insert into lecturers table
         const lecturerData = {
             lecturer_id: lecturerId,
             full_name: fullName,
@@ -427,7 +454,7 @@ async function registerLecturer() {
             throw new Error('Failed to create lecturer record');
         }
 
-        // 4️⃣ Success UI
+        // Success
         document.getElementById('successMessage').innerHTML = `
             Your registration is complete!<br><br>
             <strong>Lecturer ID:</strong> ${lecturerId}<br>
@@ -441,6 +468,8 @@ async function registerLecturer() {
     } catch (error) {
         console.error('Lecturer registration error:', error);
         alert('Registration failed: ' + error.message);
+    } finally {
+        showLoading(false);
     }
 }
 
@@ -448,6 +477,8 @@ async function registerLecturer() {
 function closeModal() {
     document.getElementById('successModal').classList.add('hidden');
     document.getElementById('successModal').classList.remove('flex');
+    // Redirect to login page
+    window.location.href = 'login.html';
 }
 
     </script>

@@ -203,17 +203,22 @@ function redirectToDashboard(user) {
 }
         // Show loading spinner
         function showLoading(show) {
-            const spinner = document.getElementById('loadingSpinner');
-            if (show) {
-                spinner.classList.remove('hidden');
-                spinner.classList.add('flex');
-                document.getElementById('loginBtn').disabled = true;
-            } else {
-                spinner.classList.add('hidden');
-                spinner.classList.remove('flex');
-                document.getElementById('loginBtn').disabled = false;
-            }
-        }
+    const spinner = document.getElementById('loadingSpinner');
+    const studentBtn = document.getElementById('studentSubmitBtn');
+    const lecturerBtn = document.getElementById('lecturerSubmitBtn');
+    
+    if (show) {
+        spinner.classList.remove('hidden');
+        spinner.classList.add('flex');
+        if (studentBtn) studentBtn.disabled = true;
+        if (lecturerBtn) lecturerBtn.disabled = true;
+    } else {
+        spinner.classList.add('hidden');
+        spinner.classList.remove('flex');
+        if (studentBtn) studentBtn.disabled = false;
+        if (lecturerBtn) lecturerBtn.disabled = false;
+    }
+}
 
         // Show error message
         function showError(message) {
