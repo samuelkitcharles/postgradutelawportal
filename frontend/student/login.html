@@ -188,18 +188,19 @@
         }
 
         // Redirect to appropriate dashboard
-        function redirectToDashboard(user) {
-            const userType = user.user_metadata?.user_type;
-            
-            if (userType === 'student') {
-                window.location.href = 'dashboard-supabase.html';
-            } else if (userType === 'lecturer') {
-                window.location.href = '../lecturer/lecturer_dashboard.html';
-            } else {
-                showError('Unable to determine user type. Please contact support.');
-            }
-        }
-
+function redirectToDashboard(user) {
+    const userType = user.user_metadata?.user_type;
+    
+    if (userType === 'student') {
+        window.location.href = 'dashboard.html';
+    } else if (userType === 'lecturer') {
+        window.location.href = '../lecturer/lecturer_dashboard.html';
+    } else {
+        console.error('User metadata:', user.user_metadata);
+        showError('Your account is not properly configured. Please re-register or contact support.');
+        showLoading(false);
+    }
+}
         // Show loading spinner
         function showLoading(show) {
             const spinner = document.getElementById('loadingSpinner');

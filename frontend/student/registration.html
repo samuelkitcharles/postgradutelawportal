@@ -257,65 +257,88 @@
         }
 
         // Register Student
-        function registerStudent() {
-            const fullName = document.getElementById('studentFullName').value;
-            const dob = document.getElementById('studentDob').value;
-            const nationality = document.getElementById('studentNationality').value;
-            const phone = document.getElementById('studentPhone').value;
-            const email = document.getElementById('studentEmail').value;
-            const degree = document.getElementById('studentDegree').value;
-            const university = document.getElementById('studentUniversity').value;
-            const yearGraduated = document.getElementById('studentYearGraduated').value;
-            const program = document.getElementById('studentProgram').value;
-            const password = document.getElementById('studentPassword').value;
-            const confirmPassword = document.getElementById('studentConfirmPassword').value;
+async function registerStudent() {
+    const fullName = document.getElementById('studentFullName').value;
+    const dob = document.getElementById('studentDob').value;
+    const nationality = document.getElementById('studentNationality').value;
+    const phone = document.getElementById('studentPhone').value;
+    const email = document.getElementById('studentEmail').value;
+    const degree = document.getElementById('studentDegree').value;
+    const university = document.getElementById('studentUniversity').value;
+    const yearGraduated = document.getElementById('studentYearGraduated').value;
+    const program = document.getElementById('studentProgram').value;
+    const password = document.getElementById('studentPassword').value;
+    const confirmPassword = document.getElementById('studentConfirmPassword').value;
 
-            // Validation
-            if (!fullName || !dob || !nationality || !phone || !email || !degree || !university || !yearGraduated || !program || !password || !confirmPassword) {
-                alert('Please fill in all required fields');
-                return;
-            }
+    // Validation
+    if (!fullName || !dob || !nationality || !phone || !email || !degree || !university || !yearGraduated || !program || !password || !confirmPassword) {
+        alert('Please fill in all required fields');
+        return;
+    }
 
-            if (password !== confirmPassword) {
-                alert('Passwords do not match');
-                return;
-            }
+    if (password !== confirmPassword) {
+        alert('Passwords do not match');
+        return;
+    }
 
-            // Generate student ID (in real app, this would be done by backend)
-            const studentId = 'STU' + Math.floor(Math.random() * 100000);
+    if (password.length < 6) {
+        alert('Password must be at least 6 characters');
+        return;
+    }
 
-            // Get program name
-            const programSelect = document.getElementById('studentProgram');
-            const programName = programSelect.options[programSelect.selectedIndex].text;
+    try {
+        // Generate student ID
+        const studentId = Utils.generateStudentId();
 
-            // In a real application, you would send this data to the backend
-            const studentData = {
-                student_id: studentId,
-                full_name: fullName,
-                date_of_birth: dob,
-                nationality: nationality,
-                phone_number: phone,
-                email: email,
-                bachelor_degree: degree,
-                university_attended: university,
-                year_graduated: yearGraduated,
-                program_id: program,
-                semester_id: 1, // Always Semester 1 for new students
-                password: password
-            };
+        // 1. Create Supabase Auth user
+        const authResult = await Auth.signUp(email, password, 'student', {
+            full_name: fullName
+        });
 
-            console.log('Student Registration Data:', studentData);
-
-            // Show success modal
-            document.getElementById('successMessage').innerHTML = 
-                `Your registration is complete!<br><br>
-                <strong>Student ID:</strong> ${studentId}<br>
-                <strong>Program:</strong> ${programName}<br>
-                <strong>Starting Semester:</strong> Semester 1<br><br>
-                Please save your Student ID for login.`;
-            document.getElementById('successModal').classList.remove('hidden');
-            document.getElementById('successModal').classList.add('flex');
+        if (!authResult.success) {
+            throw new Error(authResult.error);
         }
+
+        // 2. Create student record in database
+        const studentData = {
+            student_id: studentId,
+            full_name: fullName,
+            date_of_birth: dob,
+            nationality: nationality,
+            phone_number: phone,
+            email: email,
+            bachelor_degree: degree,
+            university_attended: university,
+            year_graduated: parseInt(yearGraduated),
+            program_id: parseInt(program),
+            semester_id: 1 // Always start at Semester 1
+        };
+
+        const dbResult = await DB.students.create(studentData);
+
+        if (!dbResult.success) {
+            throw new Error('Failed to create student record');
+        }
+
+        // Get program name for display
+        const programSelect = document.getElementById('studentProgram');
+        const programName = programSelect.options[programSelect.selectedIndex].text;
+
+        // Show success modal
+        document.getElementById('successMessage').innerHTML = 
+            `Your registration is complete!<br><br>
+            <strong>Student ID:</strong> ${studentId}<br>
+            <strong>Program:</strong> ${programName}<br>
+            <strong>Starting Semester:</strong> Semester 1<br><br>
+            Please check your email to verify your account.`;
+        document.getElementById('successModal').classList.remove('hidden');
+        document.getElementById('successModal').classList.add('flex');
+
+    } catch (error) {
+        console.error('Registration error:', error);
+        alert('Registration failed: ' + error.message);
+    }
+}
 
         // Register Lecturer
         function registerLecturer() {
@@ -368,12 +391,12 @@
         }
 
         // Close modal
-        function closeModal() {
-            document.getElementById('successModal').classList.add('hidden');
-            document.getElementById('successModal').classList.remove('flex');
-            // In real app, redirect to login page
-            window.location.href = '#login';
-        }
+function closeModal() {
+    document.getElementById('successModal').classList.add('hidden');
+    document.getElementById('successModal').classList.remove('flex');
+    // Redirect to login page
+    window.location.href = 'login.html';
+}
     </script>
 </body>
 </html>
