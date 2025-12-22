@@ -76,12 +76,12 @@ postgraduate-law-school-system/
 │
 ├── frontend/
 │   ├── student/
-│   │   ├── dashboard-supabase.html (you'll create this)
+│   │   ├── dashboard.html ✓ (created)
 │   │   ├── registration-supabase.html ✓ (created)
 │   │   └── login.html ✓ (created)
 │   │
 │   └── lecturer/
-│   |    └── lecturer_dashboard.html
+│   |    └── lecturer_dashboard.html ✓ (created)
 │   │
 │   ├── admin/
 │   │  └── admin_dashboard.html
