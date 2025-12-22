@@ -296,8 +296,21 @@ async function registerStudent() {
         });
 
         if (!authResult.success) {
-            throw new Error(authResult.error);
-        }
+    // 🔐 Try to login instead (user probably already exists)
+    const loginResult = await Auth.signIn(email, password);
+
+    if (!loginResult.success) {
+        alert('Account already exists, but password is incorrect.');
+        return;
+    }
+
+    // ✅ Login successful → redirect
+    window.location.href = "../dashboard/dashboard.html";
+    return;
+}
+
+
+
 
         // 2. Create student record in database
         const studentData = {
@@ -394,9 +407,8 @@ async function registerStudent() {
 function closeModal() {
     document.getElementById('successModal').classList.add('hidden');
     document.getElementById('successModal').classList.remove('flex');
-    // Redirect to login page
-    window.location.href = 'login.html';
 }
+
     </script>
 </body>
 </html>

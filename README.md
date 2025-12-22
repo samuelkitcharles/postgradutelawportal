@@ -69,6 +69,9 @@ The application follows a **three-tier architecture**:
 
 ---
 
+http://localhost:5500/frontend/student/login.html
+
+
 postgraduate-law-school-system/
 │
 ├── frontend/

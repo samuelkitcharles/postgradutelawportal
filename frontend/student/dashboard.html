@@ -201,14 +201,14 @@
 
         async function initializeDashboard() {
             try {
-                // 1. Check if user is authenticated
+                // 1. Check session
                 const session = await Auth.getSession();
                 if (!session) {
                     window.location.href = 'login.html';
                     return;
                 }
 
-                // 2. Get current user
+                // 2. Get user
                 const user = await Auth.getCurrentUser();
                 if (!user || user.user_metadata?.user_type !== 'student') {
                     alert('Unauthorized access. Please login as a student.');
@@ -234,9 +234,10 @@
                 await loadDashboardData();
 
             } catch (error) {
-                console.error('Dashboard initialization error:', error);
-                alert('Failed to load dashboard. Please try logging in again.');
-                window.location.href = 'login.html';
+    console.error('Dashboard initialization error:', error);
+
+    // Optional: show a soft message in console only
+    console.warn('Dashboard loaded without data.');
             } finally {
                 hideLoading();
             }
