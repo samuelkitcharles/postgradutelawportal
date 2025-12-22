@@ -419,4 +419,135 @@
         </div>
     </main>
 </body>
+<script src="../../backend/db_connection/supabase-config.js"></script>
+
+<script>
+    // Check admin authentication
+    document.addEventListener('DOMContentLoaded', async () => {
+        const isAdmin = sessionStorage.getItem('isAdmin');
+        
+        if (!isAdmin) {
+            alert('Unauthorized access. Please login as administrator.');
+            window.location.href = 'admin_login.html';
+            return;
+        }
+        
+        // Initialize dashboard
+        await initializeManagementDashboard();
+    });
+
+    async function initializeManagementDashboard() {
+        try {
+            // Show loading state
+            console.log('Loading management dashboard...');
+
+            // Load all statistics
+            await Promise.all([
+                loadTotalStudents(),
+                loadFacultyMembers(),
+                loadActiveCourses(),
+                loadAverageGPA(),
+                loadProgramDistribution(),
+                loadSemesterDistribution(),
+                loadTopCourses(),
+                loadFacultyDistribution()
+            ]);
+
+            console.log('Dashboard loaded successfully');
+        } catch (error) {
+            console.error('Dashboard initialization error:', error);
+        }
+    }
+
+    // Load Total Students
+    async function loadTotalStudents() {
+        try {
+            const result = await DB.management.getTotalStudents();
+            
+            if (result.success) {
+                // Update the Total Students card (first stat card)
+                const statCards = document.querySelectorAll('.text-4xl.font-bold.text-gray-900');
+                if (statCards[0]) {
+                    statCards[0].textContent = result.count || 0;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading total students:', error);
+        }
+    }
+
+    // Load Faculty Members
+    async function loadFacultyMembers() {
+        try {
+            const result = await DB.management.getTotalLecturers();
+            
+            if (result.success) {
+                // Update the Faculty Members card (second stat card)
+                const statCards = document.querySelectorAll('.text-4xl.font-bold.text-gray-900');
+                if (statCards[1]) {
+                    statCards[1].textContent = result.count || 0;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading faculty members:', error);
+        }
+    }
+
+    // Load Active Courses
+    async function loadActiveCourses() {
+        try {
+            const result = await DB.management.getActiveCourses(1); // Semester 1
+            
+            if (result.success) {
+                // Update the Active Courses card (third stat card)
+                const statCards = document.querySelectorAll('.text-4xl.font-bold.text-gray-900');
+                if (statCards[2]) {
+                    statCards[2].textContent = result.count || 0;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading active courses:', error);
+        }
+    }
+
+    // Load Average GPA
+    async function loadAverageGPA() {
+        try {
+            const result = await DB.management.getAverageGPA();
+            
+            if (result.success) {
+                // Update the Average GPA card (fourth stat card)
+                const statCards = document.querySelectorAll('.text-4xl.font-bold.text-gray-900');
+                if (statCards[3]) {
+                    statCards[3].textContent = result.gpa || '0.00';
+                }
+            }
+        } catch (error) {
+            console.error('Error loading average GPA:', error);
+        }
+    }
+
+    // To-Do: Load Program Distribution
+    // To-Do: Load Semester Distribution
+    // To-Do: Load Top Courses
+    // To-Do: Load Faculty Distribution
+</script>
+<script>
+    // Check admin authentication
+    document.addEventListener('DOMContentLoaded', () => {
+        const isAdmin = sessionStorage.getItem('isAdmin');
+        
+        if (!isAdmin) {
+            alert('Unauthorized access. Please login as administrator.');
+            window.location.href = 'admin_login.html';
+            return;
+        }
+        
+        // Initialize dashboard
+        initializeManagementDashboard();
+    });
+
+    // To-Do: Add dashboard initialization
+</script>
+
 </html>

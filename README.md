@@ -84,7 +84,8 @@ postgraduate-law-school-system/
 │   |    └── lecturer_dashboard.html ✓ (created)
 │   │
 │   └── Management/
-│       └── Management.html
+│       ├── Management.html
+|       └── admin_login.html
 │  
 ├── backend/
 │   └── db_connection/

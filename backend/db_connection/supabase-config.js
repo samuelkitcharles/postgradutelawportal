@@ -193,6 +193,195 @@ const DB = {
         }
     },
 
+    // Management/Admin Functions
+management: {
+    // Get total number of students
+    async getTotalStudents() {
+        const { count, error } = await supabaseClient
+            .from('students')
+            .select('*', { count: 'exact', head: true });
+        
+        if (error) {
+            console.error('Error fetching total students:', error);
+            return { success: false, error };
+        }
+        return { success: true, count };
+    },
+
+    // Get total number of lecturers
+    async getTotalLecturers() {
+        const { count, error } = await supabaseClient
+            .from('lecturers')
+            .select('*', { count: 'exact', head: true });
+        
+        if (error) {
+            console.error('Error fetching total lecturers:', error);
+            return { success: false, error };
+        }
+        return { success: true, count };
+    },
+
+    // Get active courses count (current semester)
+    async getActiveCourses(semesterId = 1) {
+        const { count, error } = await supabaseClient
+            .from('courses')
+            .select('*', { count: 'exact', head: true })
+            .eq('semester_id', semesterId);
+        
+        if (error) {
+            console.error('Error fetching active courses:', error);
+            return { success: false, error };
+        }
+        return { success: true, count };
+    },
+
+    // Get average GPA across all students
+    async getAverageGPA() {
+        try {
+            // Get all exam results
+            const { data, error } = await supabaseClient
+                .from('exam_results')
+                .select('score');
+            
+            if (error) throw error;
+            
+            if (!data || data.length === 0) {
+                return { success: true, gpa: 0 };
+            }
+
+            // Calculate average score and convert to GPA (0-4 scale)
+            const totalScore = data.reduce((sum, result) => sum + (result.score || 0), 0);
+            const averageScore = totalScore / data.length;
+            const gpa = (averageScore / 25).toFixed(2); // Convert 100-point scale to 4-point scale
+            
+            return { success: true, gpa: parseFloat(gpa) };
+        } catch (error) {
+            console.error('Error calculating GPA:', error);
+            return { success: false, error };
+        }
+    },
+
+    // Get program enrollment distribution
+    async getProgramDistribution() {
+        const { data, error } = await supabaseClient
+            .from('students')
+            .select(`
+                program_id,
+                programs(program_name)
+            `);
+        
+        if (error) {
+            console.error('Error fetching program distribution:', error);
+            return { success: false, error };
+        }
+
+        // Count students per program
+        const distribution = {};
+        data.forEach(student => {
+            const programName = student.programs?.program_name || 'Unknown';
+            distribution[programName] = (distribution[programName] || 0) + 1;
+        });
+
+        return { success: true, data: distribution };
+    },
+
+    // Get semester enrollment distribution
+    async getSemesterDistribution() {
+        const { data, error } = await supabaseClient
+            .from('students')
+            .select(`
+                semester_id,
+                semesters(name)
+            `);
+        
+        if (error) {
+            console.error('Error fetching semester distribution:', error);
+            return { success: false, error };
+        }
+
+        // Count students per semester
+        const distribution = {};
+        data.forEach(student => {
+            const semesterName = student.semesters?.name || 'Unknown';
+            distribution[semesterName] = (distribution[semesterName] || 0) + 1;
+        });
+
+        return { success: true, data: distribution };
+    },
+
+    // Get top performing courses by average score
+    async getTopCourses(limit = 4) {
+        try {
+            const { data, error } = await supabaseClient
+                .from('exam_results')
+                .select(`
+                    score,
+                    exam_schedule(
+                        course_id,
+                        courses(course_code, course_name)
+                    )
+                `);
+            
+            if (error) throw error;
+
+            // Calculate average score per course
+            const courseScores = {};
+            const courseCounts = {};
+
+            data.forEach(result => {
+                const courseId = result.exam_schedule?.course_id;
+                const course = result.exam_schedule?.courses;
+                
+                if (courseId && course) {
+                    const key = `${course.course_code}-${course.course_name}`;
+                    courseScores[key] = (courseScores[key] || 0) + (result.score || 0);
+                    courseCounts[key] = (courseCounts[key] || 0) + 1;
+                }
+            });
+
+            // Calculate averages and format
+            const courses = Object.keys(courseScores).map(key => {
+                const [code, name] = key.split('-');
+                return {
+                    code,
+                    name,
+                    average: (courseScores[key] / courseCounts[key]).toFixed(1),
+                    students: courseCounts[key]
+                };
+            });
+
+            // Sort by average score and get top courses
+            courses.sort((a, b) => b.average - a.average);
+            
+            return { success: true, data: courses.slice(0, limit) };
+        } catch (error) {
+            console.error('Error fetching top courses:', error);
+            return { success: false, error };
+        }
+    },
+
+    // Get faculty distribution by academic rank
+    async getFacultyDistribution() {
+        const { data, error } = await supabaseClient
+            .from('lecturers')
+            .select('academic_rank');
+        
+        if (error) {
+            console.error('Error fetching faculty distribution:', error);
+            return { success: false, error };
+        }
+
+        // Count lecturers by rank
+        const distribution = {};
+        data.forEach(lecturer => {
+            const rank = lecturer.academic_rank || 'Unknown';
+            distribution[rank] = (distribution[rank] || 0) + 1;
+        });
+
+        return { success: true, data: distribution };
+    }
+},
+
 // Enrollments
 enrollments: {
     async getStudentEnrollments(studentId, semesterId) {
