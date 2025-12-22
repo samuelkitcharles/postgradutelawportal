@@ -37,85 +37,86 @@
         <div id="studentForm" class="bg-white rounded-b-2xl shadow-2xl p-8">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Student Registration</h2>
             
-            <form id="studentRegistrationForm" onsubmit="handleStudentRegistration(event)">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Full Name -->
-                    <div class="md:col-span-2">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Full Name *</label>
-                        <input type="text" name="fullName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Enter your full name" required>
-                    </div>
-
-                    <!-- Date of Birth -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Date of Birth *</label>
-                        <input type="date" name="dob" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
-                    </div>
-
-                    <!-- Nationality -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Nationality *</label>
-                        <input type="text" name="nationality" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., Nigerian" required>
-                    </div>
-
-                    <!-- Phone Number -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Phone Number *</label>
-                        <input type="tel" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., 08012345678" required>
-                    </div>
-
-                    <!-- Email -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Email Address *</label>
-                        <input type="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="your.email@example.com" required>
-                    </div>
-
-                    <!-- Bachelor Degree -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Bachelor Degree *</label>
-                        <input type="text" name="degree" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., LLB" required>
-                    </div>
-
-                    <!-- University Attended -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">University Attended *</label>
-                        <input type="text" name="university" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., University of Lagos" required>
-                    </div>
-
-                    <!-- Year Graduated -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Year Graduated *</label>
-                        <input type="number" name="yearGraduated" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., 2020" min="1990" max="2025" required>
-                    </div>
-
-                    <!-- Program Selection -->
-                    <div class="md:col-span-2">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Select Program *</label>
-                        <select name="program" id="studentProgram" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white" required>
-                            <option value="">-- Choose Your Program --</option>
-                            <!-- Programs will be loaded dynamically -->
-                        </select>
-                    </div>
-
-                    <!-- Password -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Password *</label>
-                        <input type="password" name="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Create a password (min 6 characters)" required minlength="6">
-                    </div>
-
-                    <!-- Confirm Password -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Confirm Password *</label>
-                        <input type="password" name="confirmPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Confirm your password" required minlength="6">
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Full Name -->
+                <div class="md:col-span-2">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Full Name *</label>
+                    <input type="text" id="studentFullName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Enter your full name" required>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="mt-8">
-                    <button type="submit" id="studentSubmitBtn" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-200 shadow-lg">
-                        Register as Student
-                    </button>
+                <!-- Date of Birth -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Date of Birth *</label>
+                    <input type="date" id="studentDob" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
                 </div>
-            </form>
+
+                <!-- Nationality -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Nationality *</label>
+                    <input type="text" id="studentNationality" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., Nigerian" required>
+                </div>
+
+                <!-- Phone Number -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Phone Number *</label>
+                    <input type="tel" id="studentPhone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., 08012345678" required>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Email Address *</label>
+                    <input type="email" id="studentEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="your.email@example.com" required>
+                </div>
+
+                <!-- Bachelor Degree -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Bachelor Degree *</label>
+                    <input type="text" id="studentDegree" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., LLB" required>
+                </div>
+
+                <!-- University Attended -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">University Attended *</label>
+                    <input type="text" id="studentUniversity" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., University of Lagos" required>
+                </div>
+
+                <!-- Year Graduated -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Year Graduated *</label>
+                    <input type="number" id="studentYearGraduated" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., 2020" min="1990" max="2025" required>
+                </div>
+
+                <!-- Program Selection -->
+                <div class="md:col-span-2">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Select Program *</label>
+                    <select id="studentProgram" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white" required>
+                        <option value="">-- Choose Your Program --</option>
+                        <option value="1">LLM in International Law</option>
+                        <option value="2">LLM in Commercial Law</option>
+                        <option value="3">LLM in Criminal Law</option>
+                        <option value="4">LLM in Human Rights Law</option>
+                    </select>
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Password *</label>
+                    <input type="password" id="studentPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Create a password" required>
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Confirm Password *</label>
+                    <input type="password" id="studentConfirmPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Confirm your password" required>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-8">
+                <button onclick="registerStudent()" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-200 shadow-lg">
+                    Register as Student
+                </button>
+            </div>
 
             <!-- Login Link -->
             <div class="mt-6 text-center">
@@ -130,88 +131,86 @@
         <div id="lecturerForm" class="bg-white rounded-b-2xl shadow-2xl p-8 hidden">
             <h2 class="text-2xl font-bold text-gray-900 mb-6">Lecturer Registration</h2>
             
-            <form id="lecturerRegistrationForm" onsubmit="handleLecturerRegistration(event)">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Full Name -->
-                    <div class="md:col-span-2">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Full Name *</label>
-                        <input type="text" name="fullName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Enter your full name" required>
-                    </div>
-
-                    <!-- Date of Birth -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Date of Birth *</label>
-                        <input type="date" name="dob" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
-                    </div>
-
-                    <!-- Gender -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Gender *</label>
-                        <select name="gender" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white" required>
-                            <option value="">-- Select Gender --</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-
-                    <!-- Phone Number -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Phone Number *</label>
-                        <input type="tel" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., 09012345678" required>
-                    </div>
-
-                    <!-- Email -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Email Address *</label>
-                        <input type="email" name="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="your.email@example.com" required>
-                    </div>
-
-                    <!-- Academic Rank -->
-                    <div class="md:col-span-2">
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Academic Rank *</label>
-                        <select name="rank" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white" required>
-                            <option value="">-- Select Academic Rank --</option>
-                            <option value="Lecturer">Lecturer</option>
-                            <option value="Senior Lecturer">Senior Lecturer</option>
-                            <option value="Associate Professor">Associate Professor</option>
-                            <option value="Professor">Professor</option>
-                        </select>
-                    </div>
-
-                    <!-- Password -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Password *</label>
-                        <input type="password" name="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Create a password (min 6 characters)" required minlength="6">
-                    </div>
-
-                    <!-- Confirm Password -->
-                    <div>
-                        <label class="block text-gray-700 text-sm font-semibold mb-2">Confirm Password *</label>
-                        <input type="password" name="confirmPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Confirm your password" required minlength="6">
-                    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Full Name -->
+                <div class="md:col-span-2">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Full Name *</label>
+                    <input type="text" id="lecturerFullName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Enter your full name" required>
                 </div>
 
-                <!-- Info Note -->
-                <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <p class="text-sm text-blue-800">
-                        <strong>Note:</strong> Course assignments and teaching schedules will be assigned by the administration after your registration is approved.
-                    </p>
+                <!-- Date of Birth -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Date of Birth *</label>
+                    <input type="date" id="lecturerDob" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" required>
                 </div>
 
-                <!-- Submit Button -->
-                <div class="mt-6">
-                    <button type="submit" id="lecturerSubmitBtn" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-200 shadow-lg">
-                        Register as Lecturer
-                    </button>
+                <!-- Gender -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Gender *</label>
+                    <select id="lecturerGender" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white" required>
+                        <option value="">-- Select Gender --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
                 </div>
-            </form>
+
+                <!-- Phone Number -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Phone Number *</label>
+                    <input type="tel" id="lecturerPhone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., 09012345678" required>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Email Address *</label>
+                    <input type="email" id="lecturerEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="your.email@example.com" required>
+                </div>
+
+                <!-- Academic Rank -->
+                <div class="md:col-span-2">
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Academic Rank *</label>
+                    <select id="lecturerRank" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white" required>
+                        <option value="">-- Select Academic Rank --</option>
+                        <option value="Lecturer">Lecturer</option>
+                        <option value="Senior Lecturer">Senior Lecturer</option>
+                        <option value="Associate Professor">Associate Professor</option>
+                        <option value="Professor">Professor</option>
+                    </select>
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Password *</label>
+                    <input type="password" id="lecturerPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Create a password" required>
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label class="block text-gray-700 text-sm font-semibold mb-2">Confirm Password *</label>
+                    <input type="password" id="lecturerConfirmPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Confirm your password" required>
+                </div>
+            </div>
+
+            <!-- Info Note -->
+            <div class="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p class="text-sm text-blue-800">
+                    <strong>Note:</strong> Course assignments and teaching schedules will be assigned by the administration after your registration is approved.
+                </p>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-6">
+                <button onclick="registerLecturer()" class="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 rounded-lg font-semibold hover:from-amber-700 hover:to-amber-800 transition-all duration-200 shadow-lg">
+                    Register as Lecturer
+                </button>
+            </div>
 
             <!-- Login Link -->
             <div class="mt-6 text-center">
                 <p class="text-gray-600 text-sm">
                     Already have an account? 
-                    <a href="login.html" class="text-amber-600 hover:text-amber-700 font-semibold">Login here</a>
+                    <a href="#" class="text-amber-600 hover:text-amber-700 font-semibold">Login here</a>
                 </p>
             </div>
         </div>
@@ -227,48 +226,15 @@
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-2">Registration Successful!</h3>
                     <p id="successMessage" class="text-gray-600 mb-6"></p>
-                    <button onclick="goToLogin()" class="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition-all">
+                    <button onclick="closeModal()" class="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition-all">
                         Go to Login
                     </button>
                 </div>
             </div>
         </div>
-
-        <!-- Loading Spinner -->
-        <div id="loadingSpinner" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-            <div class="bg-white rounded-lg p-8">
-                <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-amber-600 mx-auto"></div>
-                <p class="mt-4 text-gray-700 font-semibold">Processing...</p>
-            </div>
-        </div>
     </div>
 
-    <!-- Include Supabase Configuration -->
-    <script src="../backend/db_connection/supabase-config.js"></script>
-    
     <script>
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', async () => {
-            await loadPrograms();
-        });
-
-        // Load programs from database
-        async function loadPrograms() {
-            const result = await DB.programs.getAll();
-            
-            if (result.success && result.data) {
-                const select = document.getElementById('studentProgram');
-                select.innerHTML = '<option value="">-- Choose Your Program --</option>';
-                
-                result.data.forEach(program => {
-                    const option = document.createElement('option');
-                    option.value = program.program_id;
-                    option.textContent = program.program_name;
-                    select.appendChild(option);
-                });
-            }
-        }
-
         // Toggle between Student and Lecturer forms
         function showStudentForm() {
             document.getElementById('studentForm').classList.remove('hidden');
@@ -288,174 +254,123 @@
             document.getElementById('studentTab').classList.add('bg-gray-100', 'text-gray-600');
         }
 
-        // Handle Student Registration
-        async function handleStudentRegistration(event) {
-            event.preventDefault();
-            
-            const form = event.target;
-            const formData = new FormData(form);
-            
-            // Validate passwords match
-            if (formData.get('password') !== formData.get('confirmPassword')) {
-                alert('Passwords do not match!');
+        // Register Student
+        function registerStudent() {
+            const fullName = document.getElementById('studentFullName').value;
+            const dob = document.getElementById('studentDob').value;
+            const nationality = document.getElementById('studentNationality').value;
+            const phone = document.getElementById('studentPhone').value;
+            const email = document.getElementById('studentEmail').value;
+            const degree = document.getElementById('studentDegree').value;
+            const university = document.getElementById('studentUniversity').value;
+            const yearGraduated = document.getElementById('studentYearGraduated').value;
+            const program = document.getElementById('studentProgram').value;
+            const password = document.getElementById('studentPassword').value;
+            const confirmPassword = document.getElementById('studentConfirmPassword').value;
+
+            // Validation
+            if (!fullName || !dob || !nationality || !phone || !email || !degree || !university || !yearGraduated || !program || !password || !confirmPassword) {
+                alert('Please fill in all required fields');
                 return;
             }
 
-            // Show loading spinner
-            showLoading(true);
-
-            try {
-                // 1. Create auth user
-                const authResult = await Auth.signUp(
-                    formData.get('email'),
-                    formData.get('password'),
-                    'student',
-                    { full_name: formData.get('fullName') }
-                );
-
-                if (!authResult.success) {
-                    throw new Error(authResult.error);
-                }
-
-                // 2. Generate student ID
-                const studentId = Utils.generateStudentId();
-
-                // 3. Create student record in database
-                const studentData = {
-                    student_id: studentId,
-                    full_name: formData.get('fullName'),
-                    date_of_birth: formData.get('dob'),
-                    nationality: formData.get('nationality'),
-                    phone_number: formData.get('phone'),
-                    email: formData.get('email'),
-                    bachelor_degree: formData.get('degree'),
-                    university_attended: formData.get('university'),
-                    year_graduated: parseInt(formData.get('yearGraduated')),
-                    program_id: parseInt(formData.get('program')),
-                    semester_id: 1 // Always start in Semester 1
-                };
-
-                const dbResult = await DB.students.create(studentData);
-
-                if (!dbResult.success) {
-                    throw new Error(dbResult.error.message);
-                }
-
-                // 4. Get program name for display
-                const programSelect = document.getElementById('studentProgram');
-                const programName = programSelect.options[programSelect.selectedIndex].text;
-
-                // 5. Show success message
-                showSuccess(`
-                    Your registration is complete!<br><br>
-                    <strong>Student ID:</strong> ${studentId}<br>
-                    <strong>Program:</strong> ${programName}<br>
-                    <strong>Starting Semester:</strong> Semester 1<br><br>
-                    Please save your Student ID for login.
-                `);
-
-                // Reset form
-                form.reset();
-
-            } catch (error) {
-                console.error('Registration error:', error);
-                alert('Registration failed: ' + error.message);
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // Handle Lecturer Registration
-        async function handleLecturerRegistration(event) {
-            event.preventDefault();
-            
-            const form = event.target;
-            const formData = new FormData(form);
-            
-            // Validate passwords match
-            if (formData.get('password') !== formData.get('confirmPassword')) {
-                alert('Passwords do not match!');
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
                 return;
             }
 
-            // Show loading spinner
-            showLoading(true);
+            // Generate student ID (in real app, this would be done by backend)
+            const studentId = 'STU' + Math.floor(Math.random() * 100000);
 
-            try {
-                // 1. Create auth user
-                const authResult = await Auth.signUp(
-                    formData.get('email'),
-                    formData.get('password'),
-                    'lecturer',
-                    { full_name: formData.get('fullName') }
-                );
+            // Get program name
+            const programSelect = document.getElementById('studentProgram');
+            const programName = programSelect.options[programSelect.selectedIndex].text;
 
-                if (!authResult.success) {
-                    throw new Error(authResult.error);
-                }
+            // In a real application, you would send this data to the backend
+            const studentData = {
+                student_id: studentId,
+                full_name: fullName,
+                date_of_birth: dob,
+                nationality: nationality,
+                phone_number: phone,
+                email: email,
+                bachelor_degree: degree,
+                university_attended: university,
+                year_graduated: yearGraduated,
+                program_id: program,
+                semester_id: 1, // Always Semester 1 for new students
+                password: password
+            };
 
-                // 2. Generate lecturer ID
-                const lecturerId = Utils.generateLecturerId();
+            console.log('Student Registration Data:', studentData);
 
-                // 3. Create lecturer record in database
-                const lecturerData = {
-                    lecturer_id: lecturerId,
-                    full_name: formData.get('fullName'),
-                    date_of_birth: formData.get('dob'),
-                    gender: formData.get('gender'),
-                    phone_number: formData.get('phone'),
-                    email: formData.get('email'),
-                    academic_rank: formData.get('rank')
-                };
-
-                const dbResult = await DB.lecturers.create(lecturerData);
-
-                if (!dbResult.success) {
-                    throw new Error(dbResult.error.message);
-                }
-
-                // 4. Show success message
-                showSuccess(`
-                    Your registration is complete!<br><br>
-                    <strong>Lecturer ID:</strong> ${lecturerId}<br>
-                    <strong>Academic Rank:</strong> ${formData.get('rank')}<br><br>
-                    Please save your Lecturer ID for login.<br>
-                    Course assignments will be made by the administration.
-                `);
-
-                // Reset form
-                form.reset();
-
-            } catch (error) {
-                console.error('Registration error:', error);
-                alert('Registration failed: ' + error.message);
-            } finally {
-                showLoading(false);
-            }
-        }
-
-        // Show loading spinner
-        function showLoading(show) {
-            const spinner = document.getElementById('loadingSpinner');
-            if (show) {
-                spinner.classList.remove('hidden');
-                spinner.classList.add('flex');
-            } else {
-                spinner.classList.add('hidden');
-                spinner.classList.remove('flex');
-            }
-        }
-
-        // Show success modal
-        function showSuccess(message) {
-            document.getElementById('successMessage').innerHTML = message;
+            // Show success modal
+            document.getElementById('successMessage').innerHTML = 
+                `Your registration is complete!<br><br>
+                <strong>Student ID:</strong> ${studentId}<br>
+                <strong>Program:</strong> ${programName}<br>
+                <strong>Starting Semester:</strong> Semester 1<br><br>
+                Please save your Student ID for login.`;
             document.getElementById('successModal').classList.remove('hidden');
             document.getElementById('successModal').classList.add('flex');
         }
 
-        // Go to login page
-        function goToLogin() {
-            window.location.href = 'login.html';
+        // Register Lecturer
+        function registerLecturer() {
+            const fullName = document.getElementById('lecturerFullName').value;
+            const dob = document.getElementById('lecturerDob').value;
+            const gender = document.getElementById('lecturerGender').value;
+            const phone = document.getElementById('lecturerPhone').value;
+            const email = document.getElementById('lecturerEmail').value;
+            const rank = document.getElementById('lecturerRank').value;
+            const password = document.getElementById('lecturerPassword').value;
+            const confirmPassword = document.getElementById('lecturerConfirmPassword').value;
+
+            // Validation
+            if (!fullName || !dob || !gender || !phone || !email || !rank || !password || !confirmPassword) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+
+            // Generate lecturer ID (in real app, this would be done by backend)
+            const lecturerId = 'LEC' + Math.floor(Math.random() * 10000);
+
+            // In a real application, you would send this data to the backend
+            const lecturerData = {
+                lecturer_id: lecturerId,
+                full_name: fullName,
+                date_of_birth: dob,
+                gender: gender,
+                phone_number: phone,
+                email: email,
+                academic_rank: rank,
+                password: password
+            };
+
+            console.log('Lecturer Registration Data:', lecturerData);
+
+            // Show success modal
+            document.getElementById('successMessage').innerHTML = 
+                `Your registration is complete!<br><br>
+                <strong>Lecturer ID:</strong> ${lecturerId}<br>
+                <strong>Academic Rank:</strong> ${rank}<br><br>
+                Please save your Lecturer ID for login.<br>
+                Course assignments will be made by the administration.`;
+            document.getElementById('successModal').classList.remove('hidden');
+            document.getElementById('successModal').classList.add('flex');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('successModal').classList.add('hidden');
+            document.getElementById('successModal').classList.remove('flex');
+            // In real app, redirect to login page
+            window.location.href = '#login';
         }
     </script>
 </body>
