@@ -373,7 +373,46 @@ enrollments: {
             }
             return { success: true, data };
         }
+    },
+
+    // Get students enrolled in a specific course
+async getCourseStudents(courseId, semesterId) {
+    const { data, error } = await supabaseClient
+        .from('enrollments')
+        .select(`
+            *,
+            students(student_id, full_name, email),
+            courses(course_code, course_name)
+        `)
+        .eq('course_id', courseId)
+        .eq('semester_id', semesterId)
+        .eq('status', 'Active');
+    
+    if (error) {
+        console.error('Error fetching course students:', error);
+        return { success: false, error };
     }
+    return { success: true, data };
+},
+
+// Get exam results for a course
+async getCourseResults(courseId) {
+    const { data, error } = await supabaseClient
+        .from('exam_results')
+        .select(`
+            *,
+            students(student_id, full_name, email),
+            exam_schedule!inner(course_id, exam_type)
+        `)
+        .eq('exam_schedule.course_id', courseId);
+    
+    if (error) {
+        console.error('Error fetching course results:', error);
+        return { success: false, error };
+    }
+    return { success: true, data };
+}
+
 };
 
 // Utility Functions

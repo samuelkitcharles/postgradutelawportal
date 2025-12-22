@@ -83,14 +83,12 @@ postgraduate-law-school-system/
 │   └── lecturer/
 │   |    └── lecturer_dashboard.html ✓ (created)
 │   │
-│   ├── admin/
-│   │  └── admin_dashboard.html
+│   └── Management/
+│       └── Management.html
 │  
 ├── backend/
 │   └── db_connection/
 │       └── supabase-config.js ✓ (created)
-│   │
-│   ├── sql/
 │   
 │
 ├── database/
@@ -98,14 +96,16 @@ postgraduate-law-school-system/
 │   │   └── postlawddl.sql
 │   │
 │   ├── dml/
-│      └── postlawdml.sql
+│   └── postlawdml.sql
 │   
 │
 ├── screenshots/
 │   ├── frontend/
 │   └── database/
 │
-└── README.md
+├── README.md
+│
+└── sqlqueries.sql ✓ (created)
 
 
 ## Contributors

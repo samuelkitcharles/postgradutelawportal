@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lecturer Dashboard - Law School Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../backend/db_connection/supabase-config.js"></script>
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
@@ -34,9 +36,10 @@
                     
                     <div class="flex items-center space-x-3">
                         <div class="text-right">
-                            <p class="text-sm font-semibold text-gray-900">Dr. John Miller</p>
-                            <p class="text-xs text-gray-500">LEC2024001</p>
-                        </div>
+    <p id="lecturerName" class="text-sm font-semibold text-gray-900">Loading...</p>
+    <p id="lecturerId" class="text-xs text-gray-500">---</p>
+</div>
+
                        <button onclick="logout()" class="flex items-center space-x-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
@@ -53,7 +56,7 @@
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <!-- Welcome Section -->
         <div class="bg-gradient-to-r from-amber-600 to-amber-700 rounded-xl p-6 mb-8 text-white">
-            <h2 class="text-2xl font-bold mb-2">Welcome back, Dr. Miller!</h2>
+            <h2 class="text-2xl font-bold mb-2">Welcome back,</h2>
             <p class="text-amber-100">Here's an overview of your teaching schedule and responsibilities</p>
         </div>
 
@@ -76,7 +79,7 @@
                     </svg>
                 </div>
                 <p class="text-gray-500 text-sm mb-1">Total Students</p>
-                <p class="text-3xl font-bold text-gray-900">87</p>
+                <p id="totalStudents" class="text-3xl font-bold text-gray-900">--</p>
             </div>
             
             <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
@@ -86,7 +89,7 @@
                     </svg>
                 </div>
                 <p class="text-gray-500 text-sm mb-1">Exams to Invigilate</p>
-                <p class="text-3xl font-bold text-gray-900">2</p>
+                <p id="examsToInvigilate" class="text-3xl font-bold text-gray-900">--</p>
             </div>
             
             <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
@@ -96,7 +99,7 @@
                     </svg>
                 </div>
                 <p class="text-gray-500 text-sm mb-1">Classes This Week</p>
-                <p class="text-3xl font-bold text-gray-900">8</p>
+                <p id="classesThisWeek" class="text-3xl font-bold text-gray-900">--</p>
             </div>
         </div>
 
@@ -254,25 +257,24 @@
                         Lecturer Information
                     </h3>
                     
-                    <div class="space-y-3">
-                        <div>
-                            <p class="text-xs text-gray-500 uppercase font-medium">Academic Rank</p>
-                            <p class="text-sm text-gray-900">Associate Professor</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-500 uppercase font-medium">Department</p>
-                            <p class="text-sm text-gray-900">International Law</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-500 uppercase font-medium">Email</p>
-                            <p class="text-sm text-gray-900">j.miller@lawschool.edu</p>
-                        </div>
-                        <div>
-                            <p class="text-xs text-gray-500 uppercase font-medium">Phone</p>
-                            <p class="text-sm text-gray-900">+1 (555) 123-4567</p>
-                        </div>
-                    </div>
-                </div>
+<div id="lecturerInfo" class="space-y-3">
+    <div>
+        <p class="text-xs text-gray-500 uppercase font-medium">Academic Rank</p>
+        <p id="academicRank" class="text-sm text-gray-900">Loading...</p>
+    </div>
+    <div>
+        <p class="text-xs text-gray-500 uppercase font-medium">Email</p>
+        <p id="lecturerEmail" class="text-sm text-gray-900">Loading...</p>
+    </div>
+    <div>
+        <p class="text-xs text-gray-500 uppercase font-medium">Phone</p>
+        <p id="lecturerPhone" class="text-sm text-gray-900">Loading...</p>
+    </div>
+    <div>
+        <p class="text-xs text-gray-500 uppercase font-medium">Gender</p>
+        <p id="lecturerGender" class="text-sm text-gray-900">Loading...</p>
+    </div>
+</div>                </div>
 
                 <!-- Exam Invigilation -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -283,29 +285,9 @@
                         Exam Invigilation
                     </h3>
                     
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-start pb-3 border-b border-gray-100">
-                            <div>
-                                <p class="text-sm font-medium text-gray-900">INTL101</p>
-                                <p class="text-xs text-gray-500">Room 301</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-xs font-medium text-gray-900">Apr 15</p>
-                                <p class="text-xs text-gray-500">9:00 AM</p>
-                            </div>
-                        </div>
-                        <div class="flex justify-between items-start pb-3 border-b border-gray-100">
-                            <div>
-                                <p class="text-sm font-medium text-gray-900">INTL102</p>
-                                <p class="text-xs text-gray-500">Room 205</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-xs font-medium text-gray-900">Apr 18</p>
-                                <p class="text-xs text-gray-500">9:00 AM</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<div id="examInvigilationList" class="space-y-3">
+    <p class="text-gray-500 text-center py-4 text-sm">Loading...</p>
+</div>                </div>
 
                 <!-- Quick Actions -->
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -358,153 +340,335 @@
     <script src="../../backend/db_connection/supabase-config.js"></script>
 
 
-    <script>
-                async function logout() {
-            try {
-                await Auth.signOut();
-                sessionStorage.clear();
+<script>
+    let currentLecturer = null;
+    let currentCourseData = null;
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', async () => {
+        await initializeLecturerDashboard();
+    });
+
+    async function initializeLecturerDashboard() {
+        try {
+            // Check authentication
+            const session = await Auth.getSession();
+            if (!session) {
                 window.location.href = '../student/login.html';
-            } catch (error) {
-                console.error('Logout error:', error);
-                // Force redirect even if logout fails
-                window.location.href = '../student/login.html';
+                return;
             }
+
+            const user = await Auth.getCurrentUser();
+            if (!user || user.user_metadata?.user_type !== 'lecturer') {
+                alert('Unauthorized. Please login as a lecturer.');
+                window.location.href = '../student/login.html';
+                return;
+            }
+
+            // Get lecturer data
+            const lecturerResult = await DB.lecturers.getByEmail(user.email);
+            if (!lecturerResult.success) {
+                throw new Error('Failed to load lecturer data');
+            }
+
+            currentLecturer = lecturerResult.data;
+
+            // Update header
+            document.getElementById('lecturerName').textContent = currentLecturer.full_name;
+            document.getElementById('lecturerId').textContent = `LEC${currentLecturer.lecturer_id}`;
+
+            updateLecturerInfo();
+
+            // Update welcome message
+            const firstName = currentLecturer.full_name.split(' ')[0];
+            document.querySelector('.bg-gradient-to-r h2').textContent = 
+                `Welcome back, ${firstName}!`;
+
+            // Load dashboard data
+            await loadLecturerCourses();
+            await loadDashboardStats();  
+            await loadExamInvigilation();  // ADD THIS LINE
+
+
+
+        } catch (error) {
+            console.error('Dashboard initialization error:', error);
+            alert('Failed to load dashboard. Please try again.');
+        }
+    }
+
+    // Update lecturer info display
+function updateLecturerInfo() {
+    document.getElementById('academicRank').textContent = 
+        currentLecturer.academic_rank || 'Not specified';
+    
+    document.getElementById('lecturerEmail').textContent = 
+        currentLecturer.email;
+    
+    document.getElementById('lecturerPhone').textContent = 
+        currentLecturer.phone_number || 'Not provided';
+    
+    document.getElementById('lecturerGender').textContent = 
+        currentLecturer.gender || 'Not specified';
+}
+    
+async function loadDashboardStats() {
+    try {
+        const currentSemester = 1;
+
+        // 1. Get all courses this lecturer teaches
+        const coursesResult = await DB.teachingAssignments.getLecturerCourses(
+            currentLecturer.lecturer_id,
+            currentSemester
+        );
+
+        const courses = coursesResult.data || [];
+        const courseIds = courses.map(c => c.course_id);
+
+        // 2. Count total students across all courses
+        let totalStudents = 0;
+        if (courseIds.length > 0) {
+            const studentsResult = await supabaseClient
+                .from('enrollments')
+                .select('student_id', { count: 'exact' })
+                .in('course_id', courseIds)
+                .eq('semester_id', currentSemester)
+                .eq('status', 'Active');
+            
+            totalStudents = studentsResult.count || 0;
         }
 
-        // Sample student data for each course
-        const courseData = {
-            'INTL101': {
-                name: 'Foundations of International Law',
-                students: [
-                    { id: 'STU2024001', name: 'Alice Johnson', email: 'alice.johnson@lawschool.edu', midterm: 74.5, final: 76.0 },
-                    { id: 'STU2024002', name: 'Bob Smith', email: 'bob.smith@lawschool.edu', midterm: 68.0, final: 72.5 },
-                    { id: 'STU2024003', name: 'Carol Williams', email: 'carol.williams@lawschool.edu', midterm: 82.0, final: 85.0 },
-                    { id: 'STU2024004', name: 'David Brown', email: 'david.brown@lawschool.edu', midterm: 70.5, final: 73.0 },
-                    { id: 'STU2024005', name: 'Emma Davis', email: 'emma.davis@lawschool.edu', midterm: 88.0, final: 90.5 },
-                    { id: 'STU2024006', name: 'Frank Miller', email: 'frank.miller@lawschool.edu', midterm: 65.0, final: 68.0 },
-                    { id: 'STU2024007', name: 'Grace Wilson', email: 'grace.wilson@lawschool.edu', midterm: 78.5, final: 80.0 },
-                    { id: 'STU2024008', name: 'Henry Moore', email: 'henry.moore@lawschool.edu', midterm: 72.0, final: 75.5 }
-                ]
-            },
-            'INTL102': {
-                name: 'Treaty Law',
-                students: [
-                    { id: 'STU2024001', name: 'Alice Johnson', email: 'alice.johnson@lawschool.edu', midterm: 68.0, final: 70.0 },
-                    { id: 'STU2024009', name: 'Isabel Taylor', email: 'isabel.taylor@lawschool.edu', midterm: 75.0, final: 78.5 },
-                    { id: 'STU2024010', name: 'Jack Anderson', email: 'jack.anderson@lawschool.edu', midterm: 80.0, final: 82.0 },
-                    { id: 'STU2024011', name: 'Kate Thomas', email: 'kate.thomas@lawschool.edu', midterm: 72.5, final: 74.0 },
-                    { id: 'STU2024012', name: 'Leo Jackson', email: 'leo.jackson@lawschool.edu', midterm: 85.0, final: 88.0 },
-                    { id: 'STU2024013', name: 'Mia White', email: 'mia.white@lawschool.edu', midterm: 70.0, final: 72.5 }
-                ]
-            },
-            'INTL105': {
-                name: 'Law of International Organizations',
-                students: [
-                    { id: 'STU2024001', name: 'Alice Johnson', email: 'alice.johnson@lawschool.edu', midterm: 80.0, final: 82.5 },
-                    { id: 'STU2024014', name: 'Noah Harris', email: 'noah.harris@lawschool.edu', midterm: 76.0, final: 78.0 },
-                    { id: 'STU2024015', name: 'Olivia Martin', email: 'olivia.martin@lawschool.edu', midterm: 88.0, final: 90.0 },
-                    { id: 'STU2024016', name: 'Paul Thompson', email: 'paul.thompson@lawschool.edu', midterm: 74.5, final: 76.5 },
-                    { id: 'STU2024017', name: 'Quinn Garcia', email: 'quinn.garcia@lawschool.edu', midterm: 82.0, final: 84.5 }
-                ]
-            }
-        };
+        // 3. Count exams to invigilate
+        const examsResult = await supabaseClient
+            .from('exam_schedule')
+            .select('exam_id', { count: 'exact' })
+            .eq('invigilator_lecturer_id', currentLecturer.lecturer_id)
+            .gte('exam_date', new Date().toISOString().split('T')[0]);
+        
+        const examsCount = examsResult.count || 0;
 
-        let currentCourse = null;
+        // 4. Classes this week (for now, we'll calculate based on courses)
+        // Assuming each course has 2-3 classes per week
+        const classesPerWeek = courses.length * 2;
 
-        function showStudents(courseCode, courseName) {
-            currentCourse = courseCode;
-            const course = courseData[courseCode];
+        // Update UI
+        document.getElementById('totalStudents').textContent = totalStudents;
+        document.getElementById('examsToInvigilate').textContent = examsCount;
+        document.getElementById('classesThisWeek').textContent = classesPerWeek;
+
+    } catch (error) {
+        console.error('Error loading dashboard stats:', error);
+    }
+}
+
+async function loadExamInvigilation() {
+    try {
+        const result = await supabaseClient
+            .from('exam_schedule')
+            .select(`
+                *,
+                courses(course_code)
+            `)
+            .eq('invigilator_lecturer_id', currentLecturer.lecturer_id)
+            .gte('exam_date', new Date().toISOString().split('T')[0])
+            .order('exam_date', { ascending: true })
+            .limit(5);
+
+        if (result.error) throw result.error;
+
+        const exams = result.data || [];
+        const examList = document.getElementById('examInvigilationList');
+
+        if (exams.length === 0) {
+            examList.innerHTML = '<p class="text-gray-500 text-center py-4 text-sm">No upcoming exams</p>';
+            return;
+        }
+
+        examList.innerHTML = exams.map(exam => {
+            const date = new Date(exam.exam_date);
+            const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const timeStr = exam.exam_start_time ? 
+                new Date('2000-01-01 ' + exam.exam_start_time).toLocaleTimeString('en-US', { 
+                    hour: 'numeric', 
+                    minute: '2-digit' 
+                }) : 'TBA';
+
+            return `
+                <div class="flex justify-between items-start pb-3 border-b border-gray-100">
+                    <div>
+                        <p class="text-sm font-medium text-gray-900">${exam.courses.course_code}</p>
+                        <p class="text-xs text-gray-500">Room ${exam.exam_type || 'TBA'}</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-medium text-gray-900">${dateStr}</p>
+                        <p class="text-xs text-gray-500">${timeStr}</p>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+    } catch (error) {
+        console.error('Error loading exam invigilation:', error);
+    }
+}
+async function loadLecturerCourses() {
+    try {
+        const currentSemester = 1;
+
+        const result = await DB.teachingAssignments.getLecturerCourses(
+            currentLecturer.lecturer_id,
+            currentSemester
+        );
+
+        if (!result.success) {
+            console.error('Failed to load courses:', result.error);
+            return;
+        }
+
+        const courses = result.data || [];
+        
+        // Update "Courses Teaching" stat
+// Update only the first stat card (Courses Teaching)
+const statCards = document.querySelectorAll('.text-3xl.font-bold.text-gray-900');
+if (statCards.length > 0) {
+    statCards[0].textContent = courses.length;
+}        const coursesList = document.getElementById('coursesList');
+
+        // If no courses
+        if (courses.length === 0) {
+            coursesList.innerHTML = 
+                '<p class="text-gray-500 text-center py-8">No courses assigned yet</p>';
+            return;
+        }
+
+        // Display courses dynamically
+        const coursesHTML = await Promise.all(courses.map(async (assignment) => {
+            const course = assignment.courses;
             
-            document.getElementById('courseCode').textContent = courseCode;
-            document.getElementById('courseName').textContent = course.name;
-            document.getElementById('courseTitle').textContent = `Students in ${courseCode}`;
+            // Get student count for this course
+            const enrollmentResult = await supabaseClient
+                .from('enrollments')
+                .select('student_id', { count: 'exact' })
+                .eq('course_id', course.course_id)
+                .eq('semester_id', currentSemester)
+                .eq('status', 'Active');
             
-            const tbody = document.getElementById('studentTableBody');
-            tbody.innerHTML = '';
-            
-            course.students.forEach((student, index) => {
-                const total = ((student.midterm + student.final) / 2).toFixed(2);
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${student.id}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${student.name}</td>
+            const studentCount = enrollmentResult.count || 0;
+
+            return `
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-colors cursor-pointer" 
+                     onclick="showStudents(${course.course_id}, '${course.course_code}', '${course.course_name}')">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <p class="font-semibold text-gray-900">${course.course_name}</p>
+                            <p class="text-sm text-gray-500">${course.course_code}</p>
+                        </div>
+                        <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">Active</span>
+                    </div>
+                    <div class="flex items-center justify-between text-sm">
+                        <div class="flex items-center text-gray-600">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                            <span>${studentCount} Students</span>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <button class="px-4 py-2 bg-amber-600 text-white text-sm font-medium rounded hover:bg-amber-700 w-full">
+                            View Students & Manage Grades
+                        </button>
+                    </div>
+                </div>
+            `;
+        }));
+
+        coursesList.innerHTML = coursesHTML.join('');
+
+    } catch (error) {
+        console.error('Error loading courses:', error);
+        document.getElementById('coursesList').innerHTML = 
+            '<p class="text-red-500 text-center py-8">Error loading courses</p>';
+    }
+}
+
+async function showStudents(courseId, courseCode, courseName) {
+    try {
+        // Show loading
+        document.getElementById('courseCode').textContent = courseCode;
+        document.getElementById('courseName').textContent = courseName;
+        document.getElementById('courseTitle').textContent = `Students in ${courseCode}`;
+        
+        const tbody = document.getElementById('studentTableBody');
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4">Loading students...</td></tr>';
+        
+        document.getElementById('studentSection').classList.remove('hidden');
+        document.getElementById('studentSection').scrollIntoView({ behavior: 'smooth' });
+
+        // Load students
+        const result = await supabaseClient
+            .from('enrollments')
+            .select(`
+                *,
+                students(student_id, full_name, email)
+            `)
+            .eq('course_id', courseId)
+            .eq('semester_id', 1)
+            .eq('status', 'Active');
+
+        if (result.error) {
+            throw result.error;
+        }
+
+        const enrollments = result.data || [];
+
+        if (enrollments.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-gray-500">No students enrolled</td></tr>';
+            return;
+        }
+
+        // Display students
+        tbody.innerHTML = enrollments.map((enrollment, index) => {
+            const student = enrollment.students;
+            return `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">STU${student.student_id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${student.full_name}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${student.email}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <input type="number" id="midterm-${index}" value="${student.midterm}" 
-                            class="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:ring-amber-500 focus:border-amber-500" 
+                        <input type="number" id="midterm-${index}" value="0" 
+                            class="w-20 px-2 py-1 border border-gray-300 rounded text-sm" 
                             min="0" max="100" step="0.5">
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <input type="number" id="final-${index}" value="${student.final}" 
-                            class="w-20 px-2 py-1 border border-gray-300 rounded text-sm focus:ring-amber-500 focus:border-amber-500" 
+                        <input type="number" id="final-${index}" value="0" 
+                            class="w-20 px-2 py-1 border border-gray-300 rounded text-sm" 
                             min="0" max="100" step="0.5">
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span id="total-${index}" class="text-sm font-bold text-gray-900">${total}</span>
+                        <span id="total-${index}" class="text-sm font-bold text-gray-900">0</span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <button onclick="updateTotal(${index})" class="text-amber-600 hover:text-amber-800 text-sm font-medium">
                             Calculate
                         </button>
                     </td>
-                `;
-                tbody.appendChild(row);
-            });
-            
-            document.getElementById('studentSection').classList.remove('hidden');
-            document.getElementById('studentSection').scrollIntoView({ behavior: 'smooth' });
-        }
+                </tr>
+            `;
+        }).join('');
 
-        function hideStudents() {
-            document.getElementById('studentSection').classList.add('hidden');
-            currentCourse = null;
-        }
+    } catch (error) {
+        console.error('Error loading students:', error);
+        alert('Failed to load students');
+    }
+}
+    function hideStudents() {
+        document.getElementById('studentSection').classList.add('hidden');
+    }
 
-        function updateTotal(index) {
-            const midterm = parseFloat(document.getElementById(`midterm-${index}`).value) || 0;
-            const final = parseFloat(document.getElementById(`final-${index}`).value) || 0;
-            const total = ((midterm + final) / 2).toFixed(2);
-            document.getElementById(`total-${index}`).textContent = total;
-        }
-
-        function saveAllGrades() {
-            if (!currentCourse) return;
-            
-            const course = courseData[currentCourse];
-            const updates = [];
-            
-            course.students.forEach((student, index) => {
-                const midterm = parseFloat(document.getElementById(`midterm-${index}`).value) || 0;
-                const final = parseFloat(document.getElementById(`final-${index}`).value) || 0;
-                const total = ((midterm + final) / 2).toFixed(2);
-                
-                updates.push({
-                    studentId: student.id,
-                    studentName: student.name,
-                    courseCode: currentCourse,
-                    midterm: midterm,
-                    final: final,
-                    total: total
-                });
-                
-                // Update the data in memory
-                student.midterm = midterm;
-                student.final = final;
-            });
-            
-            // In a real application, this would send data to the backend
-            console.log('Saving grades:', updates);
-            
-            // Show success message
-            const successMsg = document.createElement('div');
-            successMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
-            successMsg.textContent = `✓ Grades saved successfully for ${updates.length} students in ${currentCourse}`;
-            document.body.appendChild(successMsg);
-            
-            setTimeout(() => {
-                successMsg.remove();
-            }, 3000);
-        }
-    </script>
-</body>
+    async function logout() {
+        await Auth.signOut();
+        sessionStorage.clear();
+        window.location.href = '../student/login.html';
+    }
+</script></body>
 </html>
