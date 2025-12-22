@@ -330,13 +330,34 @@ async function registerStudent() {
 
         const dbResult = await DB.students.create(studentData);
 
-        if (!dbResult.success) {
-            throw new Error('Failed to create student record');
-        }
+if (!dbResult.success) {
+    throw new Error('Failed to create student record');
+}
 
-        // Get program name for display
-        const programSelect = document.getElementById('studentProgram');
-        const programName = programSelect.options[programSelect.selectedIndex].text;
+// NEW: Auto-enroll student in Semester 1 courses
+const enrollmentResult = await DB.enrollments.enrollStudentInSemesterCourses(
+    studentId,
+    parseInt(program),
+    1 // Semester 1
+);
+
+if (!enrollmentResult.success) {
+    console.warn('Failed to auto-enroll in courses:', enrollmentResult.error);
+    // Don't fail registration if enrollment fails
+}
+
+// Get program name for display
+const programSelect = document.getElementById('studentProgram');
+const programName = programSelect.options[programSelect.selectedIndex].text;
+
+// Show success modal with enrollment info
+document.getElementById('successMessage').innerHTML = 
+    `Your registration is complete!<br><br>
+    <strong>Student ID:</strong> ${studentId}<br>
+    <strong>Program:</strong> ${programName}<br>
+    <strong>Starting Semester:</strong> Semester 1<br>
+    <strong>Enrolled Courses:</strong> ${enrollmentResult.count || 0}<br><br>
+    Please check your email to verify your account.`;
 
         // Show success modal
         document.getElementById('successMessage').innerHTML = 

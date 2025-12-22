@@ -263,63 +263,63 @@
         }
 
         async function loadEnrollments() {
-            try {
-                const result = await DB.enrollments.getStudentEnrollments(
-                    currentStudent.student_id,
-                    currentStudent.semester_id
-                );
+    try {
+        // Query courses directly based on program and semester
+        const { data: courses, error } = await supabaseClient
+            .from('courses')
+            .select('*')
+            .eq('program_id', currentStudent.program_id)
+            .eq('semester_id', currentStudent.semester_id)
+            .order('course_code');
 
-                if (!result.success) {
-                    console.error('Failed to load enrollments:', result.error);
-                    document.getElementById('coursesList').innerHTML = 
-                        '<div class="text-center py-4 text-gray-500">No courses found</div>';
-                    return;
-                }
-
-                const enrollments = result.data || [];
-                
-                // Update stats
-                document.getElementById('enrolledCourses').textContent = enrollments.length;
-
-                // Update section title
-                const semesterName = currentStudent.semesters?.name || `Semester ${currentStudent.semester_id}`;
-                document.getElementById('coursesSectionTitle').textContent = 
-                    `Enrolled Courses - ${semesterName}`;
-
-                // Display courses
-                if (enrollments.length === 0) {
-                    document.getElementById('coursesList').innerHTML = 
-                        '<div class="text-center py-8 text-gray-500">No courses enrolled for this semester</div>';
-                    return;
-                }
-
-                const coursesHTML = enrollments.map(enrollment => {
-                    const course = enrollment.courses;
-                    const statusColor = enrollment.status === 'Active' ? 'green' : 'gray';
-                    
-                    return `
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-colors">
-                            <div class="flex justify-between items-start mb-2">
-                                <div>
-                                    <p class="font-semibold text-gray-900">${course.course_name}</p>
-                                    <p class="text-sm text-gray-500">${course.course_code}</p>
-                                </div>
-                                <span class="px-3 py-1 bg-${statusColor}-100 text-${statusColor}-700 text-xs font-medium rounded-full">
-                                    ${enrollment.status}
-                                </span>
-                            </div>
-                        </div>
-                    `;
-                }).join('');
-
-                document.getElementById('coursesList').innerHTML = coursesHTML;
-
-            } catch (error) {
-                console.error('Error loading enrollments:', error);
-                document.getElementById('coursesList').innerHTML = 
-                    '<div class="text-center py-4 text-red-500">Error loading courses</div>';
-            }
+        if (error) {
+            console.error('Failed to load courses:', error);
+            document.getElementById('coursesList').innerHTML = 
+                '<div class="text-center py-4 text-gray-500">No courses found</div>';
+            return;
         }
+
+        const coursesList = courses || [];
+        
+        // Update stats
+        document.getElementById('enrolledCourses').textContent = coursesList.length;
+
+        // Update section title
+        const semesterName = currentStudent.semesters?.name || `Semester ${currentStudent.semester_id}`;
+        document.getElementById('coursesSectionTitle').textContent = 
+            `Enrolled Courses - ${semesterName}`;
+
+        // Display courses
+        if (coursesList.length === 0) {
+            document.getElementById('coursesList').innerHTML = 
+                '<div class="text-center py-8 text-gray-500">No courses available for this semester</div>';
+            return;
+        }
+
+        const coursesHTML = coursesList.map(course => {
+            return `
+                <div class="border border-gray-200 rounded-lg p-4 hover:border-amber-300 transition-colors">
+                    <div class="flex justify-between items-start mb-2">
+                        <div>
+                            <p class="font-semibold text-gray-900">${course.course_name}</p>
+                            <p class="text-sm text-gray-500">${course.course_code}</p>
+                        </div>
+                        <span class="px-3 py-1 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+                            Active
+                        </span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        document.getElementById('coursesList').innerHTML = coursesHTML;
+
+    } catch (error) {
+        console.error('Error loading courses:', error);
+        document.getElementById('coursesList').innerHTML = 
+            '<div class="text-center py-4 text-red-500">Error loading courses</div>';
+    }
+}
 
         async function loadExamResults() {
             try {

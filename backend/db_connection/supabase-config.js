@@ -193,40 +193,83 @@ const DB = {
         }
     },
 
-    // Enrollments
-    enrollments: {
-        async getStudentEnrollments(studentId, semesterId) {
-            const { data, error } = await supabaseClient
-                .from('enrollments')
-                .select(`
-                    *,
-                    courses(*, programs(*)),
-                    semesters(*)
-                `)
-                .eq('student_id', studentId)
-                .eq('semester_id', semesterId)
-                .eq('status', 'Active');
-            
-            if (error) {
-                console.error('Error fetching enrollments:', error);
-                return { success: false, error };
-            }
-            return { success: true, data };
-        },
+// Enrollments
+enrollments: {
+    async getStudentEnrollments(studentId, semesterId) {
+        const { data, error } = await supabaseClient
+            .from('enrollments')
+            .select(`
+                *,
+                courses(*, programs(*)),
+                semesters(*)
+            `)
+            .eq('student_id', studentId)
+            .eq('semester_id', semesterId)
+            // .eq('status', 'Active');
+        
+        if (error) {
+            console.error('Error fetching enrollments:', error);
+            return { success: false, error };
+        }
+        return { success: true, data };
+    },
 
-        async create(enrollmentData) {
-            const { data, error } = await supabaseClient
+    async create(enrollmentData) {
+        const { data, error } = await supabaseClient
+            .from('enrollments')
+            .insert([enrollmentData])
+            .select();
+        
+        if (error) {
+            console.error('Error creating enrollment:', error);
+            return { success: false, error };
+        }
+        return { success: true, data: data[0] };
+    },
+
+    // NEW FUNCTION - Auto-enroll student in semester courses
+    async enrollStudentInSemesterCourses(studentId, programId, semesterId) {
+        try {
+            // 1. Get all courses for this program and semester
+            const { data: courses, error: coursesError } = await supabaseClient
+                .from('courses')
+                .select('course_id')
+                .eq('program_id', programId)
+                .eq('semester_id', semesterId);
+            
+            if (coursesError) throw coursesError;
+            
+            if (!courses || courses.length === 0) {
+                return { success: true, message: 'No courses found', count: 0 };
+            }
+
+            // 2. Generate enrollment records
+            const enrollments = courses.map((course) => ({
+                enrollment_id: parseInt(`${studentId}${course.course_id}`),
+                student_id: studentId,
+                course_id: course.course_id,
+                semester_id: semesterId,
+                status: 'Active'
+            }));
+
+            // 3. Insert all enrollments
+            const { data, error: insertError } = await supabaseClient
                 .from('enrollments')
-                .insert([enrollmentData])
+                .insert(enrollments)
                 .select();
             
-            if (error) {
-                console.error('Error creating enrollment:', error);
-                return { success: false, error };
-            }
-            return { success: true, data: data[0] };
+            if (insertError) throw insertError;
+
+            return { success: true, data, count: enrollments.length };
+        } catch (error) {
+            console.error('Error enrolling student in courses:', error);
+            return { success: false, error };
         }
-    },
+    }
+},
+
+
+    
 
     // Exam Results
     examResults: {
